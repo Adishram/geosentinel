@@ -1,0 +1,49 @@
+# GeoSentinel scenario configuration.
+# Every number here is an ILLUSTRATIVE ASSUMPTION for a research simulation,
+# not a validated ecological parameter. Edit freely; see ASSUMPTIONS.md.
+
+score:
+  # Weights are applied to normalised factors in [0, 1]. They are re-normalised
+  # over the factors that are available, so missing data never becomes "zero risk".
+  weights:
+    dryness: 0.25            # combined rainfall-deficit / vegetation-stress factor (see below)
+    forest_water_scarcity: 0.20
+    crop_attractiveness: 0.25
+    forest_proximity: 0.30   # real geography: village distance to reserve boundary
+  # Dryness = blend of rainfall dryness and vegetation stress. They are related,
+  # so they share ONE weight instead of being counted twice.
+  dryness_blend:
+    rainfall: 0.5
+    vegetation: 0.5
+  rainfall:
+    # 30-day rainfall total (mm) mapped linearly: >= wet_mm -> dryness 0, <= dry_mm -> dryness 1
+    wet_mm: 250
+    dry_mm: 10
+  proximity:
+    # distance from village point to the reserve boundary (m); inside reserve = 0 m
+    near_m: 0          # -> factor 1
+    far_m: 8000        # -> factor 0
+  # Optional month assumption. Default all 0 = no seasonal effect.
+  # It is shown in the UI and adds to crop_attractiveness only if the user enables it.
+  month_crop_adjust:
+    enabled: false
+    values: {1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 0.0}
+
+categories:   # score (0-100) lower bounds
+  Low: 0
+  Moderate: 35
+  Elevated: 55
+  High: 75
+
+geofence:
+  # buffer_m = min_m + (max_m - min_m) * (score/100) ** exponent
+  min_m: 300
+  max_m: 2500
+  exponent: 1.0
+  projected_crs: "EPSG:32643"   # WGS 84 / UTM zone 43N (metre-based)
+  # Approximate settlement footprint radius when no official boundary exists
+  footprint_radius_m: 250
+
+study_area:
+  bbox: [76.40, 11.48, 76.75, 11.68]   # lon_min, lat_min, lon_max, lat_max
+  weather_point: [11.56, 76.60]         # lat, lon for Open-Meteo request (grid cell shared by villages)

@@ -1,0 +1,11 @@
+# Curated study villages. Coordinates are NOT typed here: they are read from the
+# cached OpenStreetMap place nodes listed below (data/cache/villages.geojson).
+# All are in The Nilgiris district, Tamil Nadu (Mudumalai / Masinagudi area).
+# OSM place nodes are approximate settlement centres, NOT official boundaries.
+villages:
+  - {osm_id: node/902588435,   name: Masinagudi}
+  - {osm_id: node/321564949,   name: Mavanalla}
+  - {osm_id: node/13625087201, name: Vazhaithottam}
+  - {osm_id: node/287835457,   name: Thepakkadu}
+  - {osm_id: node/10742013172, name: Kargudi}
+  - {osm_id: node/10742013147, name: Thorapalli}
