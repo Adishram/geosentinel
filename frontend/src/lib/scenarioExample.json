@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-01",
+  "preset": "Dry conditions with reduced forest water",
+  "baseline": {
+    "name": "Masinagudi",
+    "osm_id": "node/902588435",
+    "coordinates": [76.6389659, 11.5682904],
+    "inside_reserve": true,
+    "distance_to_forest_m": 0,
+    "score": 59.7708,
+    "category": "Elevated",
+    "contributions": {
+      "dryness": 11.77,
+      "forest_water_scarcity": 8,
+      "crop_attractiveness": 10,
+      "forest_proximity": 30
+    },
+    "factors": {
+      "dryness": 0.4708333333333333,
+      "forest_water_scarcity": 0.4,
+      "crop_attractiveness": 0.4,
+      "forest_proximity": 1
+    },
+    "missing": [],
+    "buffer_m": 1614.9576,
+    "area_km2": 10.923045645221796,
+    "baseline_score": null,
+    "baseline_buffer_m": null,
+    "delta": null,
+    "contribution_deltas": null,
+    "explanation": [
+      "Largest contributions: Proximity to reserve 30.0 pts; Dryness (rainfall + vegetation) 11.8 pts."
+    ],
+    "advisory": "[SIMULATED ADVISORY — RESEARCH DEMO, NOT REAL]\nVillage: Masinagudi\nScenario category: Elevated (score 60/100)\nAdvisory zone: 1615 m around approximate settlement\nDate: 2026-10-01\nHypothetical simulation output. Follow official Forest Department guidance. No message is sent."
+  },
+  "current": {
+    "name": "Masinagudi",
+    "osm_id": "node/902588435",
+    "coordinates": [76.6389659, 11.5682904],
+    "inside_reserve": true,
+    "distance_to_forest_m": 0,
+    "score": 78.2396,
+    "category": "High",
+    "contributions": {
+      "dryness": 22.24,
+      "forest_water_scarcity": 16,
+      "crop_attractiveness": 10,
+      "forest_proximity": 30
+    },
+    "factors": {
+      "dryness": 0.8895833333333334,
+      "forest_water_scarcity": 0.8,
+      "crop_attractiveness": 0.4,
+      "forest_proximity": 1
+    },
+    "missing": [],
+    "buffer_m": 2021.2712,
+    "area_km2": 16.20089727945311,
+    "baseline_score": null,
+    "baseline_buffer_m": null,
+    "delta": null,
+    "contribution_deltas": null,
+    "explanation": [
+      "Largest contributions: Proximity to reserve 30.0 pts; Dryness (rainfall + vegetation) 22.2 pts."
+    ],
+    "advisory": "[SIMULATED ADVISORY — RESEARCH DEMO, NOT REAL]\nVillage: Masinagudi\nScenario category: High (score 78/100)\nAdvisory zone: 2021 m around approximate settlement\nDate: 2026-10-01\nHypothetical simulation output. Follow official Forest Department guidance. No message is sent."
+  }
+}
