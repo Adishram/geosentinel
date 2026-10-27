@@ -36,7 +36,9 @@ export default function ScenarioExample() {
                   ? "Water scarcity"
                   : key === "crop_attractiveness"
                     ? "Crops"
-                    : "Proximity"}
+                    : key === "resource_pull"
+                      ? "Scarcity × crops"
+                      : "Proximity"}
             </span>
             <div>
               <i

@@ -20,3 +20,13 @@ Retrieved **2026-10-08** (the exact UTC timestamps are stored in each cache file
 - **Village footprints are approximate**: a 250 m disc around each OSM place node. They are not official administrative boundaries.
 - In OSM, Masinagudi, Thepakkadu and Kargudi lie *inside* the mapped national-park polygon, so their distance to the reserve is 0 m. The OSM polygon may not match the gazetted core/buffer limits.
 - All villages share one Open-Meteo grid cell, so no village-level rainfall variation is shown.
+
+## Connected dashboard evidence
+
+- Open-Meteo historical weather: https://open-meteo.com/en/docs/historical-weather-api — complete 30-day precipitation and mean daily maximum temperature; shared study-area grid.
+- Element 84 Earth Search: https://github.com/Element84/earth-search — public Sentinel-2 Collection 1 Level 2A STAC discovery, thumbnail and cloud-optimised red/NIR/SCL assets. Reflectance scale/offset and pixel scene classification are applied before NDVI. No API key required. Provider availability is not guaranteed.
+- Local field crops: `data/crop_observations.csv`, initially empty; latest record per village up to 30 days old. Missing records use the explicit user crop assumption, never generated observations.
+
+`GET /api/live-environment/YYYY-MM-DD` returns source timestamps, scene date, partial source errors, crop records and satellite proxy values. `POST /api/scenario` with `use_live_data: true` uses these measurements and produces the same explainable score and metric geofence workflow. Optional raster processing requires `rasterio` from `requirements-api.txt`; a missing runtime returns an index error while preserving scene metadata. See ASSUMPTIONS.md for proxy limitations and formulas.
+
+The dashboard loads scene metadata first and calls `GET /api/satellite-analysis/YYYY-MM-DD` separately for the slower COG sampling. Scene selection requires at least 80% footprint coverage of the reserve within the study bbox before comparing cloud cover; this prevents neighbouring tiles from being mistaken for reserve observations. Sampling uses the 8× COG overview on a 128×128 shared grid. This is a coarse regional proxy and can miss small water sources.

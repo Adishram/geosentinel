@@ -6,10 +6,13 @@ score:
   # Weights are applied to normalised factors in [0, 1]. They are re-normalised
   # over the factors that are available, so missing data never becomes "zero risk".
   weights:
-    dryness: 0.25            # combined rainfall-deficit / vegetation-stress factor (see below)
+    dryness: 0.30            # combined rainfall-deficit / vegetation-stress factor (see below)
     forest_water_scarcity: 0.20
-    crop_attractiveness: 0.25
-    forest_proximity: 0.30   # real geography: village distance to reserve boundary
+    crop_attractiveness: 0.15
+    forest_proximity: 0.20   # real geography: village distance to reserve boundary
+    resource_pull: 0.15      # compound scarcity plus attractive village crops
+  resource_pull:
+    enabled: true
   # Dryness = blend of rainfall dryness and vegetation stress. They are related,
   # so they share ONE weight instead of being counted twice.
   dryness_blend:
@@ -23,8 +26,14 @@ score:
     # distance from village point to the reserve boundary (m); inside reserve = 0 m
     near_m: 0          # -> factor 1
     far_m: 8000        # -> factor 0
-  # Optional month assumption. Default all 0 = no seasonal effect.
-  # It is shown in the UI and adds to crop_attractiveness only if the user enables it.
+  # STUDY ASSUMPTION (not fitted to Mudumalai records): more elephant movement
+  # toward settlements in the hot dry months (Feb-May), least in the SW monsoon
+  # (Jun-Sep). This is a separate, weighted factor, NOT a multiplier. It partly
+  # overlaps with dryness; that overlap is accepted and documented in ASSUMPTIONS.md.
+  season:
+    enabled: false
+    profile: {1: 0.55, 2: 0.70, 3: 0.85, 4: 1.00, 5: 0.85, 6: 0.35, 7: 0.20, 8: 0.20, 9: 0.30, 10: 0.40, 11: 0.45, 12: 0.50}
+  # Legacy optional crop-by-month adjustment (disabled; superseded by season).
   month_crop_adjust:
     enabled: false
     values: {1: 0.0, 2: 0.0, 3: 0.0, 4: 0.0, 5: 0.0, 6: 0.0, 7: 0.0, 8: 0.0, 9: 0.0, 10: 0.0, 11: 0.0, 12: 0.0}
@@ -43,6 +52,25 @@ geofence:
   projected_crs: "EPSG:32643"   # WGS 84 / UTM zone 43N (metre-based)
   # Approximate settlement footprint radius when no official boundary exists
   footprint_radius_m: 250
+
+# SIMULATED sightings (not observations). Expected sightings per week rise with
+# the score: rate = base + (max - base) * (score/100) ** exponent.
+# A seeded Poisson draw then produces repeatable simulated events inside each geofence.
+sightings:
+  base_per_week: 0.2
+  max_per_week: 8.0
+  exponent: 2.5
+  window_days: 7
+  night_share: 0.7          # assumed share of events between 18:00 and 06:00
+  forest_bias_kappa: 1.5    # von Mises concentration toward the nearest reserve edge (0 = no bias)
+
+# SIMULATED phone alerts. Nothing is ever sent to a real device.
+alerts:
+  threshold: 80             # conservative illustrative alert threshold; not calibrated
+  levels:                   # score lower bounds for each alert level
+    watch: 65
+    alert: 80
+    urgent: 90
 
 study_area:
   bbox: [76.40, 11.48, 76.75, 11.68]   # lon_min, lat_min, lon_max, lat_max

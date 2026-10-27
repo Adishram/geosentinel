@@ -78,7 +78,7 @@ def test_missing_sub_inputs_and_insufficient_weather():
     missing = calculate({**BASE, "rainfall_30d_mm": None, "vegetation_stress": None,
                          "forest_water_availability": None, "crop_attractiveness": None})
     assert missing["villages"][0]["score"] > 0
-    assert set(missing["villages"][0]["missing"]) == {"dryness", "forest_water_scarcity", "crop_attractiveness"}
+    assert set(missing["villages"][0]["missing"]) == {"dryness", "forest_water_scarcity", "crop_attractiveness", "resource_pull"}
     unavailable = calculate({**BASE, "date": "1900-01-01", "mode": "environmental"})
     assert unavailable["current"]["inputs"]["rainfall_30d_mm"] is None
     assert unavailable["current"]["provenance"]["rainfall"] == "missing"

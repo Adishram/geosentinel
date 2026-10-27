@@ -128,3 +128,11 @@ Environmental mode uses cached Open-Meteo ERA5/ERA5-Land precipitation from one 
 MapLibre requires WebGL and remains a substantial deferred bundle; analysis and charts remain available without a working map. Hardware animation performance has not been benchmarked. Browser-local storage may be cleared or unavailable.
 
 See [GITHUB_INTEGRATION.md](GITHUB_INTEGRATION.md) for integration and validation, [REFINEMENT.md](REFINEMENT.md) for before/after design review, [IMPLEMENTATION.md](IMPLEMENTATION.md) for the historical implementation audit, and [ASSUMPTIONS.md](ASSUMPTIONS.md), [DATA_SOURCES.md](DATA_SOURCES.md), [HANDOFF.md](HANDOFF.md) for scientific provenance and follow-up work.
+
+## Connected environmental dashboard
+
+Install API dependencies with `.venv/bin/python -m pip install -r requirements-api.txt`, then run `.venv/bin/python -m uvicorn geosentinel.api:app --host 127.0.0.1 --port 8000`. After `cd frontend && npm run build`, the API serves the built dashboard at http://127.0.0.1:8000/#workspace.
+
+The dashboard automatically loads dated Sentinel-2 imagery, cloud coverage, NDVI, visible-water fraction, 30-day rainfall, temperature, village crop evidence and current score contributions. Imagery and weather appear before the slower satellite pixel analysis completes. Click **Use API evidence in score** to apply the measurements to all village scores and geofences. Environmental data never silently replaces a manual scenario. Public network access is required; missing sources are shown explicitly.
+
+Alert previews now require complete inputs and a score of **80/100**; urgent starts at **90**. The assumed reward includes a scarcity × crop attraction interaction and disables the independent seasonal factor. Fill `data/crop_observations.csv` with dated field records to replace village crop assumptions. Formula, rationale, thresholds, source limitations and calibration requirements are in [ASSUMPTIONS.md](ASSUMPTIONS.md).

@@ -111,9 +111,11 @@ export default function Methodology({
             only with at least 25 usable reference years.
           </p>
           <p>
-            Vegetation stress, forest water availability, and crop
-            attractiveness remain hypothetical user inputs. CHIRPS and
-            Sentinel-2 integrations are pending.
+            The dashboard connects Open-Meteo archive weather and Sentinel-2
+            imagery. Cloud-masked NDVI and visible-water sampling provide
+            vegetation and water proxies. Dated village crop records override
+            the assumed crop slider when supplied. Measurements and assumptions
+            remain distinct; no movement model has been trained.
           </p>
           <a
             className="text-link"

@@ -72,6 +72,12 @@ export default function Analysis({
         <span>Village intelligence</span>
       </div>
       <div className="analysis-content">
+        {village.alert_suppression_reason && (
+          <p role="status" className="control-hint unavailable-note">
+            {village.alert_suppression_reason}
+          </p>
+        )}
+        <p className="control-hint">Crop evidence: {village.crop_source}</p>
         <label className="sr-only" htmlFor="focus-village">
           Analyze village
         </label>

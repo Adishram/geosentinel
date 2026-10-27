@@ -107,6 +107,7 @@ export function useSimulation(boot: Bootstrap) {
       snapshot_captured: true,
       rainfall_snapshot: result.current.inputs.rainfall_30d_mm,
       observation_snapshot: result.current.observation,
+      live_data_snapshot: result.current.live_data,
     };
     setBaseline(stored);
     try {

@@ -61,6 +61,14 @@ def categorise(score: float, cfg: dict) -> str:
     return cat
 
 
+def seasonal_pressure(month: int, cfg: dict) -> Optional[float]:
+    """Hypothetical month profile from config (None when disabled)."""
+    season = cfg["score"].get("season", {})
+    if not season.get("enabled", False):
+        return None
+    return _clip01(float(season["profile"][int(month)]))
+
+
 class RuleBasedScorer:
     def __init__(self, cfg: Optional[dict] = None):
         self.cfg = cfg or load_config()
@@ -85,17 +93,26 @@ class RuleBasedScorer:
             crop = _clip01(crop + float(mc["values"].get(i.month, 0.0)))
         p = s["proximity"]
         prox = _clip01((p["far_m"] - ctx.distance_to_forest_m) / (p["far_m"] - p["near_m"]))
-        return {"dryness": dryness, "forest_water_scarcity": water,
-                "crop_attractiveness": crop, "forest_proximity": prox}
+        out = {"dryness": dryness, "forest_water_scarcity": water,
+               "crop_attractiveness": crop, "forest_proximity": prox}
+        # Push/pull interaction: crops become a stronger draw when forest
+        # resources are scarce. Require both scarcity measures; do not impute.
+        if s.get("resource_pull", {}).get("enabled", False):
+            out["resource_pull"] = (None if dryness is None or water is None or crop is None
+                                    else crop * (0.6 * dryness + 0.4 * water))
+        season = seasonal_pressure(i.month, self.cfg)
+        if season is not None:  # disabled season factor is omitted, not "missing"
+            out["seasonal_pressure"] = season
+        return out
 
     def score(self, inputs: ScenarioInputs, ctx: VillageContext) -> ScoreResult:
         w = self.cfg["score"]["weights"]
         f = self.factors(inputs, ctx)
         missing = [k for k, v in f.items() if v is None]
-        avail_w = sum(w[k] for k in f if f[k] is not None)
+        avail_w = sum(w.get(k, 0.0) for k in f if f[k] is not None)
         contrib = {}
         for k, v in f.items():
-            contrib[k] = 0.0 if v is None else 100.0 * w[k] * v / avail_w
+            contrib[k] = 0.0 if v is None or avail_w == 0 else 100.0 * w.get(k, 0.0) * v / avail_w
         total = round(sum(contrib.values()), 4)
         return ScoreResult(score=total, category=categorise(total, self.cfg),
                            contributions={k: round(v, 2) for k, v in contrib.items()},
@@ -113,6 +130,8 @@ LABELS = {
     "forest_water_scarcity": "Forest water scarcity",
     "crop_attractiveness": "Crop attractiveness",
     "forest_proximity": "Proximity to reserve",
+    "seasonal_pressure": "Seasonal pressure (assumed month profile)",
+    "resource_pull": "Resource scarcity × village crop attraction",
 }
 
 

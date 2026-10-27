@@ -7,6 +7,7 @@ import { ErrorState, Loading } from "../components/ui";
 import Controls from "../components/Controls";
 import Analysis from "../components/Analysis";
 import Methodology from "./Methodology";
+import EnvironmentalData from "../components/EnvironmentalData";
 
 const GeoMap = lazy(() => import("../components/GeoMap"));
 const Analytics = lazy(() => import("./Analytics"));
@@ -126,7 +127,9 @@ function IntelligenceWorkspace({
         </div>
         <div className="workspace-meta">
           <span className="status-dot" />
-          Cached data
+          {simulation.scenario.use_live_data
+            ? "API evidence"
+            : "Cached geography"}
           <span className="date-label">{simulation.scenario.date}</span>
         </div>
       </div>
@@ -172,6 +175,12 @@ function IntelligenceWorkspace({
         <Methodology boot={boot} result={simulation.result} />
       ) : (
         <>
+          <EnvironmentalData
+            scenario={simulation.scenario}
+            setScenario={simulation.setScenario}
+            threshold={boot.alerts?.threshold ?? 80}
+            village={village}
+          />
           {simulation.error && (
             <div className="scenario-error" role="alert">
               <span>

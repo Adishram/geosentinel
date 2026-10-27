@@ -39,7 +39,7 @@ const fields: {
   {
     key: "vegetation_stress",
     name: "Vegetation stress",
-    description: "Green → very dry · NDVI pending",
+    description: "Green → very dry · manual assumption",
     max: 1,
     step: 0.05,
     unit: "",
@@ -69,9 +69,11 @@ export default function Controls(p: Props) {
     crop_attractiveness: 0.4,
   });
   const update = (patch: Partial<Scenario>) =>
-    p.setScenario({ ...p.scenario, ...patch });
+    p.setScenario({ ...p.scenario, ...patch, use_live_data: false });
   const observed =
-    p.scenario.mode === "environmental" && !p.scenario.rain_override;
+    p.scenario.mode === "environmental" &&
+    !p.scenario.rain_override &&
+    !p.scenario.use_live_data;
   return (
     <aside className="controls-panel" aria-label="Scenario controls">
       <div className="panel-title">
@@ -93,8 +95,7 @@ export default function Controls(p: Props) {
             id="scenario-date"
             type="date"
             value={p.scenario.date}
-            min={p.boot.date_range.min ?? undefined}
-            max={p.boot.date_range.max ?? undefined}
+            min="2017-01-01"
             onChange={(e) => {
               if (e.target.value) update({ date: e.target.value });
             }}
@@ -126,9 +127,11 @@ export default function Controls(p: Props) {
             </button>
           </div>
           <p className="control-hint">
-            {observed
-              ? "Rainfall from cached reanalysis. Other inputs remain hypothetical."
-              : "User-defined assumptions. No measured environmental change."}
+            {p.scenario.use_live_data
+              ? "API weather and satellite evidence active. Adjusting a control switches to manual assumptions."
+              : observed
+                ? "Rainfall from cached reanalysis. Other inputs remain hypothetical."
+                : "User-defined assumptions. No measured environmental change."}
           </p>
           {observed &&
             !p.loading &&

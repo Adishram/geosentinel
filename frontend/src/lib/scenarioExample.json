@@ -4,65 +4,87 @@
   "baseline": {
     "name": "Masinagudi",
     "osm_id": "node/902588435",
-    "coordinates": [76.6389659, 11.5682904],
+    "coordinates": [
+      76.6389659,
+      11.5682904
+    ],
     "inside_reserve": true,
-    "distance_to_forest_m": 0,
-    "score": 59.7708,
-    "category": "Elevated",
+    "distance_to_forest_m": 0.0,
+    "score": 50.78,
+    "category": "Moderate",
     "contributions": {
-      "dryness": 11.77,
-      "forest_water_scarcity": 8,
-      "crop_attractiveness": 10,
-      "forest_proximity": 30
+      "dryness": 14.12,
+      "forest_water_scarcity": 8.0,
+      "crop_attractiveness": 6.0,
+      "forest_proximity": 20.0,
+      "resource_pull": 2.66
     },
     "factors": {
       "dryness": 0.4708333333333333,
       "forest_water_scarcity": 0.4,
       "crop_attractiveness": 0.4,
-      "forest_proximity": 1
+      "forest_proximity": 1.0,
+      "resource_pull": 0.17700000000000002
     },
     "missing": [],
-    "buffer_m": 1614.9576,
-    "area_km2": 10.923045645221796,
+    "buffer_m": 1417.16,
+    "area_km2": 8.728977350334988,
     "baseline_score": null,
     "baseline_buffer_m": null,
     "delta": null,
     "contribution_deltas": null,
     "explanation": [
-      "Largest contributions: Proximity to reserve 30.0 pts; Dryness (rainfall + vegetation) 11.8 pts."
+      "Largest contributions: Proximity to reserve 20.0 pts; Dryness (rainfall + vegetation) 14.1 pts."
     ],
-    "advisory": "[SIMULATED ADVISORY — RESEARCH DEMO, NOT REAL]\nVillage: Masinagudi\nScenario category: Elevated (score 60/100)\nAdvisory zone: 1615 m around approximate settlement\nDate: 2026-10-01\nHypothetical simulation output. Follow official Forest Department guidance. No message is sent."
+    "expected_sightings_week": 1.63,
+    "simulated_sightings": 5,
+    "alert_level": null,
+    "alert_eligible": true,
+    "alert_suppression_reason": null,
+    "crop_source": "hypothetical slider assumption",
+    "advisory": "[SIMULATED ADVISORY \u2014 RESEARCH DEMO, NOT REAL]\nVillage: Masinagudi\nScenario category: Moderate (score 51/100)\nAdvisory zone: 1417 m around approximate settlement\nDate: 2026-10-01\nHypothetical simulation output. Follow official Forest Department guidance. No message is sent."
   },
   "current": {
     "name": "Masinagudi",
     "osm_id": "node/902588435",
-    "coordinates": [76.6389659, 11.5682904],
+    "coordinates": [
+      76.6389659,
+      11.5682904
+    ],
     "inside_reserve": true,
-    "distance_to_forest_m": 0,
-    "score": 78.2396,
-    "category": "High",
+    "distance_to_forest_m": 0.0,
+    "score": 73.81,
+    "category": "Elevated",
     "contributions": {
-      "dryness": 22.24,
-      "forest_water_scarcity": 16,
-      "crop_attractiveness": 10,
-      "forest_proximity": 30
+      "dryness": 26.69,
+      "forest_water_scarcity": 16.0,
+      "crop_attractiveness": 6.0,
+      "forest_proximity": 20.0,
+      "resource_pull": 5.12
     },
     "factors": {
       "dryness": 0.8895833333333334,
       "forest_water_scarcity": 0.8,
       "crop_attractiveness": 0.4,
-      "forest_proximity": 1
+      "forest_proximity": 1.0,
+      "resource_pull": 0.3415000000000001
     },
     "missing": [],
-    "buffer_m": 2021.2712,
-    "area_km2": 16.20089727945311,
+    "buffer_m": 1923.82,
+    "area_km2": 14.840524189396474,
     "baseline_score": null,
     "baseline_buffer_m": null,
     "delta": null,
     "contribution_deltas": null,
     "explanation": [
-      "Largest contributions: Proximity to reserve 30.0 pts; Dryness (rainfall + vegetation) 22.2 pts."
+      "Largest contributions: Dryness (rainfall + vegetation) 26.7 pts; Proximity to reserve 20.0 pts."
     ],
-    "advisory": "[SIMULATED ADVISORY — RESEARCH DEMO, NOT REAL]\nVillage: Masinagudi\nScenario category: High (score 78/100)\nAdvisory zone: 2021 m around approximate settlement\nDate: 2026-10-01\nHypothetical simulation output. Follow official Forest Department guidance. No message is sent."
+    "expected_sightings_week": 3.85,
+    "simulated_sightings": 3,
+    "alert_level": "watch",
+    "alert_eligible": true,
+    "alert_suppression_reason": null,
+    "crop_source": "hypothetical slider assumption",
+    "advisory": "[SIMULATED ADVISORY \u2014 RESEARCH DEMO, NOT REAL]\nVillage: Masinagudi\nScenario category: Elevated (score 74/100)\nAdvisory zone: 1924 m around approximate settlement\nDate: 2026-10-01\nHypothetical simulation output. Follow official Forest Department guidance. No message is sent."
   }
 }

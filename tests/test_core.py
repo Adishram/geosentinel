@@ -31,7 +31,7 @@ def test_drier_scores_higher_and_buffer_grows():
 def test_missing_is_not_zero_risk():
     miss = ScenarioInputs(3, None, None, None, None)
     r = S.score(miss, CTX)
-    assert set(r.missing) == {"dryness", "forest_water_scarcity", "crop_attractiveness"}
+    assert set(r.missing) == {"dryness", "forest_water_scarcity", "crop_attractiveness", "resource_pull"}
     assert r.score > 0  # proximity alone, re-normalised
 
 
