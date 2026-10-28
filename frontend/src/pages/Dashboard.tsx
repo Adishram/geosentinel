@@ -1,3 +1,4 @@
+import VideoAlert from "../components/VideoAlert";
 import { lazy, Suspense, useEffect, useState } from "react";
 import { PanelLeftClose, PanelLeftOpen, SlidersHorizontal } from "lucide-react";
 import { api } from "../lib/api";
@@ -52,6 +53,7 @@ function IntelligenceWorkspace({
   setView: (view: View) => void;
 }) {
   const simulation = useSimulation(boot);
+  const [videoVillage, setVideoVillage] = useState<string | null>(null);
   const names = boot.villages.features.map((f) => f.properties.name);
   const [selected, setSelected] = useState(names),
     [focus, setFocus] = useState(names[0]);
@@ -115,6 +117,52 @@ function IntelligenceWorkspace({
   const village = simulation.result?.villages.find((v) => v.name === focus);
   return (
     <div className="dashboard">
+      {videoVillage && (
+        <VideoAlert
+          key={videoVillage}
+          village={videoVillage}
+          close={() => setVideoVillage(null)}
+        />
+      )}
+      <section className="environment-data">
+        <h2>Elephant alert simulation</h2>
+        <p>
+          Start the risk event, then click a village on the map to upload its
+          simulated CCTV video.
+        </p>
+        <div className="environment-actions">
+          <button
+            onClick={() =>
+              simulation.setScenario({
+                ...simulation.scenario,
+                mode: "what-if",
+                use_live_data: false,
+                rain_override: true,
+                rainfall_30d_mm: 5,
+                vegetation_stress: 1,
+                forest_water_availability: 0,
+                crop_attractiveness: 1,
+              })
+            }
+          >
+            Simulate threshold-crossing event
+          </button>
+          <button onClick={() => setVideoVillage(focus)}>
+            Upload video for {focus}
+          </button>
+        </div>
+        {!simulation.loading &&
+          simulation.result?.alerts.map((alert) => (
+            <p role="alert" key={alert.village}>
+              <strong>⚠ {alert.village}: risk of elephants</strong> · Score{" "}
+              {alert.score.toFixed(1)} exceeds the{" "}
+              {simulation.result?.alert_threshold} threshold.{" "}
+              <button onClick={() => setVideoVillage(alert.village)}>
+                Check village video
+              </button>
+            </p>
+          ))}
+      </section>
       <div className="workspace-title">
         <div>
           <h1>
@@ -226,7 +274,10 @@ function IntelligenceWorkspace({
                     result={simulation.result}
                     selected={selected}
                     focus={focus}
-                    onFocus={setFocus}
+                    onFocus={(name) => {
+                      setFocus(name);
+                      setVideoVillage(name);
+                    }}
                     loading={simulation.loading}
                   />
                 </Suspense>

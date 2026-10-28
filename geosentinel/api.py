@@ -8,7 +8,7 @@ from datetime import date, timedelta
 from functools import lru_cache
 from typing import Any, Literal
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -280,6 +280,41 @@ def scenario(request: ScenarioRequest):
         "alert_threshold": alert_threshold,
         "disclaimer": DISCLAIMER,
     }
+
+
+@app.post("/api/video-detection")
+async def video_detection(request: Request, village: str):
+    import tempfile
+    from pathlib import Path
+    from starlette.concurrency import run_in_threadpool
+    from .video import detect
+    if village not in set(resources()[1].name):
+        raise HTTPException(422, "Select a known village.")
+    path = None
+    try:
+        with tempfile.NamedTemporaryFile(suffix=".mp4", delete=False) as upload:
+            path = Path(upload.name)
+            size = 0
+            async for chunk in request.stream():
+                size += len(chunk)
+                if size > 100 * 1024 * 1024:
+                    raise HTTPException(413, "Maximum upload size is 100 MB.")
+                upload.write(chunk)
+        if not size:
+            raise HTTPException(422, "Upload a video first.")
+        result = await run_in_threadpool(detect, path)
+        return {**result, "village": village, "simulation": True}
+    except ImportError as exc:
+        raise HTTPException(503, "Install video detection dependencies: .venv/bin/python -m pip install -r requirements-api.txt") from exc
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+    except HTTPException:
+        raise
+    except Exception as exc:
+        raise HTTPException(503, "Video detector unavailable. On first use, internet access is needed to download the pretrained model.") from exc
+    finally:
+        if path:
+            path.unlink(missing_ok=True)
 
 
 # Same-origin production frontend; API routes above take precedence.

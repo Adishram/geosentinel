@@ -2430,3 +2430,13 @@ tbody th button {
 .evidence-time {
   color: #aac0b0;
 }
+.video-backdrop { position: fixed; inset: 0; z-index: 1000; background: #000b; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.video-dialog { position: relative; width: min(560px, 100%); max-height: 90vh; overflow: auto; background: #17271e; color: #e7eee9; padding: 30px; border: 1px solid #66816d; border-radius: 18px; box-shadow: 0 25px 90px #0009; }
+.video-dialog h2 { margin: 18px 0; font-size: 24px; }
+.video-dialog p { line-height: 1.6; margin: 16px 0; }
+.video-dialog small { display: block; line-height: 1.5; color: #b5c7b9; }
+.video-dialog button { background: #b7ce9a; color: #17271e; padding: 12px 16px; border-radius: 8px; margin-top: 16px; cursor: pointer; }
+.video-dialog button:disabled { opacity: .5; cursor: wait; }
+.video-dialog .video-close { position: absolute; top: 0; right: 12px; font-size: 20px; background: transparent; color: white; }
+.video-phone { width: min(390px, 100%); border: 8px solid #37463c; border-radius: 36px; }
+.video-phone img { width: 100%; border-radius: 12px; }
